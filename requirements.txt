@@ -1,0 +1,12 @@
+# Core Computer Vision
+opencv-python>=4.8.0
+numpy>=2.0.0,<2.3.0
+
+# Deep Learning / Object Detection
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0
+
+# Optional: Uncomment if you want to use advanced features
+# opencv-contrib-python>=4.8.0  # Extra OpenCV algorithms
+# Pillow>=10.0.0                # Additional image processing
