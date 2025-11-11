@@ -1,7 +1,3 @@
-"""
-Object Detection Demo Application
-"""
-
 import cv2
 import argparse
 import numpy as np
@@ -17,17 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ObjectDetectionDemo:
-    """Object detection demo application"""
-    
     def __init__(self, model_type: str = "yolov8n", confidence: float = 0.25, iou: float = 0.45):
-        """
-        Initialize demo
-        
-        Args:
-            model_type: YOLO model type
-            confidence: Confidence threshold for detections
-            iou: IOU threshold for non-maximum suppression
-        """
         self.detector = YOLODetector(model_type=model_type)
         self.detector.confidence_threshold = confidence
         self.detector.iou_threshold = iou
@@ -36,14 +22,6 @@ class ObjectDetectionDemo:
         self.compositor = Compositor()
     
     def run_video(self, video_path: str, output_path: Optional[str] = None, display: bool = True):
-        """
-        Run detection on video
-        
-        Args:
-            video_path: Path to input video or camera index (0, 1, 2, etc.)
-            output_path: Path to save output video (optional)
-            display: Whether to display results
-        """
         # Try to convert to int for camera index, otherwise use as file path
         try:
             video_source = int(video_path)
@@ -81,13 +59,10 @@ class ObjectDetectionDemo:
                 
                 frame_count += 1
                 
-                # Detect objects
                 detections = self.detector.detect(frame)
-                
-                # Track objects
                 tracked = self.tracker.update(detections)
                 
-                # Render overlays
+                # Render
                 overlays = []
                 for obj in tracked:
                     bbox = obj['bbox']
@@ -109,16 +84,13 @@ class ObjectDetectionDemo:
                         'color': (0, 255, 0),
                     })
                 
-                # Render
                 result = self.renderer.render_overlay(frame, overlays)
                 
-                # Display
                 if display:
                     cv2.imshow('Object Detection Demo', result)
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
                 
-                # Write
                 if writer:
                     writer.write(result)
                 
@@ -134,7 +106,6 @@ class ObjectDetectionDemo:
 
 
 def main():
-    """Main function"""
     parser = argparse.ArgumentParser(description="Object Detection Demo")
     parser.add_argument("--video", type=str, required=True, 
                        help="Input video path or camera index (0, 1, 2, etc.)")

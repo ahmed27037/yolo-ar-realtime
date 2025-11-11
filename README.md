@@ -1,231 +1,108 @@
-# Real-Time Computer Vision AR Graphics System
+# YOLO AR Real-Time Detection
 
-Advanced computer vision and AR rendering system featuring real-time object detection, tracking, segmentation, and AR overlay rendering.
+Real-time object detection and AR overlay system using YOLOv8. Supports multiple YOLO models with adjustable detection parameters.
 
 ## Overview
 
-This project demonstrates expertise in computer vision and AR graphics, including:
-- Real-time object detection and tracking (YOLO, DeepSORT)
-- Semantic and instance segmentation (SAM)
-- Vulkan-based AR rendering engine
-- Real-time compositing with alpha blending
-- Interactive AR applications
+Computer vision project with real-time object detection and basic AR rendering:
+- YOLOv8 object detection with multiple model sizes
+- DeepSORT tracking
+- Real-time AR overlays with transparency
+- Adjustable confidence and IOU thresholds
 
 ## Features
 
-- **Object Detection**: YOLOv8-based real-time detection
-- **Multi-Object Tracking**: DeepSORT-based tracking
-- **Segmentation**: Segment Anything Model (SAM) integration
-- **AR Rendering**: High-performance Vulkan/OpenGL renderer
-- **Real-Time Compositing**: Alpha blending and overlay composition
-- **Demo Applications**: Ready-to-use AR demos
+- YOLOv8 object detection (nano to extra-large models)
+- Multi-object tracking with DeepSORT
+- AR overlay rendering with alpha blending
+- Configurable detection thresholds
+- Webcam and video file support
 
-## Prerequisites
+## Requirements
 
 - Python 3.8+
-- GPU with Vulkan support (optional - OpenGL fallback available)
-- Camera or video file for demos
-- 4GB+ RAM recommended
+- Webcam (for real-time demo)
+- 4GB+ RAM
 
 ## Installation
 
-**Note:** The requirements have been streamlined to include only essential dependencies (OpenCV, PyTorch, Ultralytics YOLO). Optional dependencies are listed in `requirements-dev.txt`.
+Install dependencies and run. Works on Windows, Linux, and Mac.
 
-Choose your platform and run the commands in order:
-
-### Windows (PowerShell)
-
-Open PowerShell, navigate to the project directory, and run these commands one by one:
+### Windows
 
 ```powershell
-# Navigate to project directory (skip if already there)
 cd path\to\cv_ar_graphics
-
-# Create virtual environment (skip if venv already exists)
 python -m venv venv
-
-# Activate virtual environment
 .\venv\Scripts\Activate.ps1
-
-# Install dependencies
-pip install --upgrade pip
 pip install -r requirements.txt
-
-# Verify installation
-python -c "from vision import YOLODetector; from ar_renderer import VulkanRenderer; print('Installation OK')"
 ```
 
-**If you get an execution policy error**, run this first:
+If execution policy error:
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-### Windows (CMD)
-
-Open Command Prompt, navigate to the project directory, and run these commands one by one:
+### Windows CMD
 
 ```cmd
-REM Navigate to project directory (skip if already there)
 cd path\to\cv_ar_graphics
-
-REM Create virtual environment (skip if venv already exists)
 python -m venv venv
-
-REM Activate virtual environment
 venv\Scripts\activate.bat
-
-REM Install dependencies
-pip install --upgrade pip
 pip install -r requirements.txt
-
-REM Verify installation
-python -c "from vision import YOLODetector; from ar_renderer import VulkanRenderer; print('Installation OK')"
 ```
 
-### Linux
-
-Open terminal, navigate to the project directory, and run these commands one by one:
+### Linux / Mac
 
 ```bash
-# Navigate to project directory (skip if already there)
-cd /path/to/AR_ML_VR_linux/cv_ar_graphics
-
-# Create virtual environment (skip if venv already exists)
-python3 -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate
-
-# Install dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# Verify installation
-python -c "from vision import YOLODetector; from ar_renderer import VulkanRenderer; print('Installation OK')"
-```
-
-### Mac
-
-Open terminal, navigate to the project directory, and run these commands one by one:
-
-```bash
-# Navigate to project directory (skip if already there)
 cd /path/to/cv_ar_graphics
-
-# Create virtual environment (skip if venv already exists)
 python3 -m venv venv
-
-# Activate virtual environment
 source venv/bin/activate
-
-# Install dependencies
-pip install --upgrade pip
 pip install -r requirements.txt
-
-# Verify installation
-python -c "from vision import YOLODetector; from ar_renderer import VulkanRenderer; print('Installation OK')"
 ```
 
-### Optional: Pre-download YOLO Models
+YOLO models download automatically on first run.
 
-The system will automatically download YOLO models on first use. To pre-download:
+## Usage
 
-```python
-from ultralytics import YOLO
-model = YOLO('yolov8n.pt')  # Downloads automatically
-```
+Activate venv first, then run:
 
-## Running the Project
-
-### Windows (PowerShell) - Quick Commands
-
-First, make sure your virtual environment is activated:
-
-```powershell
-# Navigate to project directory
-cd path\to\cv_ar_graphics
-
-# Activate virtual environment (if not already activated)
-.\venv\Scripts\Activate.ps1
-```
-
-Then run one of the demos:
-
-**AR Overlay Demo (Webcam - Recommended):**
-```powershell
+```bash
+# AR overlay (recommended)
 python -m applications.ar_overlay --camera 0
-```
 
-**Object Detection Demo (Webcam):**
-```powershell
+# Object detection
 python -m applications.object_detection --video 0
-```
 
-**Object Detection on Video File:**
-```powershell
+# Video file
 python -m applications.object_detection --video input.mp4 --output output.mp4
 ```
 
-**Advanced Options:**
-```powershell
-# Use a larger, more accurate model
+Options:
+```bash
+# Use larger model
 python -m applications.ar_overlay --camera 0 --model yolov8x
 
-# Adjust detection sensitivity
-python -m applications.ar_overlay --camera 0 --confidence 0.5 --iou 0.4
-
-# Combine options
-python -m applications.object_detection --video 0 --model yolov8l --confidence 0.3
-```
-
-Press `q` to quit any demo.
-
-### Linux/Mac - Quick Commands
-
-```bash
-# Navigate and activate
-cd /path/to/cv_ar_graphics
-source venv/bin/activate
-
-# Run demos
-python -m applications.object_detection --video 0
-python -m applications.ar_overlay --camera 0
-```
-
-## Quick Start
-
-### AR Overlay Demo (Recommended)
-
-Real-time AR overlay with transparent highlights on detected objects:
-
-```bash
-cd cv_ar_graphics
-
-# Basic usage - webcam with default model (yolov8n - fastest)
-python -m applications.ar_overlay --camera 0
-
-# Use larger model for better accuracy (slower)
-python -m applications.ar_overlay --camera 0 --model yolov8x
-
-# Adjust detection thresholds
+# Adjust thresholds
 python -m applications.ar_overlay --camera 0 --confidence 0.5 --iou 0.4
 ```
 
-### Object Detection Demo
+Press `q` to quit.
 
-Simple bounding box detection with tracking:
+## Examples
 
+AR overlay on webcam:
 ```bash
-cd cv_ar_graphics
+python -m applications.ar_overlay --camera 0
+```
 
-# Run on webcam
-python -m applications.object_detection --video 0
-
-# Run on video file
+Object detection on video:
+```bash
 python -m applications.object_detection --video input.mp4 --output output.mp4
+```
 
-# Use medium model with custom thresholds
-python -m applications.object_detection --video 0 --model yolov8m --confidence 0.3
+With custom settings:
+```bash
+python -m applications.ar_overlay --camera 0 --model yolov8m --confidence 0.3
 ```
 
 ## Project Structure
@@ -297,158 +174,54 @@ overlay[:, :] = (0, 255, 0)  # Green overlay
 result = compositor.compose(background_image, overlay, mask=None)
 ```
 
-## Performance
+## Available Models
 
-- **30+ FPS** for CV+AR pipeline on modern hardware
-- **>90% detection accuracy** on standard datasets
-- **<50ms end-to-end latency** for real-time applications
-- **GPU-accelerated** rendering and processing
+| Model | Size | Speed | Best For |
+|-------|------|-------|----------|
+| yolov8n | 3MB | ~70ms | Fastest, good for testing |
+| yolov8s | 11MB | ~100ms | Balanced |
+| yolov8m | 26MB | ~200ms | Decent accuracy |
+| yolov8l | 44MB | ~400ms | More accurate |
+| yolov8x | 68MB | ~1200ms | Best accuracy |
 
-## Supported Models
-
-### Object Detection (YOLO)
-
-Choose the model that balances speed vs. accuracy for your needs:
-
-| Model | Size | Speed | Accuracy | Use Case |
-|-------|------|-------|----------|----------|
-| `yolov8n` | ~3MB | Fastest (~70ms) | Good | Real-time, low-power devices |
-| `yolov8s` | ~11MB | Fast (~100ms) | Better | Balanced performance |
-| `yolov8m` | ~26MB | Medium (~200ms) | Very Good | Desktop applications |
-| `yolov8l` | ~44MB | Slow (~400ms) | Excellent | High accuracy needed |
-| `yolov8x` | ~68MB | Slowest (~1200ms) | Best | Maximum accuracy, offline |
-
-**Usage:**
+Use `--model` flag to select:
 ```bash
-# Specify model with --model flag
 python -m applications.ar_overlay --camera 0 --model yolov8x
 ```
 
-### Segmentation
-- Segment Anything Model (SAM)
-- Custom segmentation models
-
 ## Configuration
 
-### Command-Line Options
-
-Both demo applications support the following options:
-
-**Model Selection:**
+Command-line options:
 ```bash
---model yolov8n|yolov8s|yolov8m|yolov8l|yolov8x
+--model yolov8n|s|m|l|x   # Model size (default: yolov8n)
+--confidence 0.25          # Detection threshold (default: 0.25)
+--iou 0.45                 # IOU threshold (default: 0.45)
 ```
 
-**Detection Thresholds:**
+Examples:
 ```bash
---confidence 0.25  # Minimum confidence (0.0-1.0, default: 0.25)
-                   # Lower = more detections (more false positives)
-                   # Higher = fewer detections (more accurate)
-
---iou 0.45         # IOU threshold for NMS (0.0-1.0, default: 0.45)
-                   # Controls overlap filtering
-```
-
-**Examples:**
-```bash
-# High precision, fewer false positives
+# Higher confidence = fewer false positives
 python -m applications.ar_overlay --camera 0 --confidence 0.6
 
-# Detect more objects, may include false positives
+# Lower confidence = detect more objects
 python -m applications.ar_overlay --camera 0 --confidence 0.15
-
-# Use best model with high precision
-python -m applications.ar_overlay --camera 0 --model yolov8x --confidence 0.5
-```
-
-### Python API Configuration
-
-```python
-detector = YOLODetector(model_type="yolov8n")
-detector.confidence_threshold = 0.25  # Detection confidence
-detector.iou_threshold = 0.45  # IoU threshold for NMS
-
-tracker = DeepSORTTracker(
-    max_age=30,      # Maximum frames without detection
-    min_hits=3       # Minimum detections to confirm track
-)
 ```
 
 ## Troubleshooting
 
-### Vulkan Not Available
-The system will automatically fall back to OpenGL if Vulkan is not available.
+**Camera not opening:**
+Try different camera IDs (0, 1, 2) or check permissions.
 
-### Camera Not Working
-- Check camera permissions
-- Verify camera device ID (try 0, 1, 2, etc.)
-- On Linux: `ls /dev/video*` to list cameras
-
-### YOLO Models Not Downloading
-Models are downloaded automatically on first use. If download fails:
+**NumPy/OpenCV crashes:**
 ```bash
-# Manual download
-wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt
-```
-
-### OpenCV Import Error
-Make sure OpenCV is installed:
-```bash
-pip install opencv-python opencv-contrib-python
-```
-
-### NumPy Crashes or Experimental Build Warning
-If you see warnings about "MINGW-W64 experimental build" or crashes when importing cv2:
-```bash
-# Uninstall and reinstall with compatible version
 pip uninstall numpy -y
 pip install "numpy>=2.0.0,<2.3.0" --force-reinstall
 ```
 
-### Application Exits Immediately Without Error
-This is usually caused by NumPy/OpenCV compatibility issues. Follow the NumPy fix above.
-
-## Documentation
-
-- [CV AR System Guide](../docs/cv_ar/README.md)
-- [Architecture Overview](../docs/architecture.md)
-- [Performance Analysis](../docs/performance.md)
+**Model download fails:**
+Models download on first run. Manually download from ultralytics if needed.
 
 ## License
 
-MIT License - See [LICENSE](../LICENSE) file for details
-
-## Command Reference
-
-### AR Overlay (Recommended for Webcam)
-```bash
-python -m applications.ar_overlay --camera 0 [OPTIONS]
-
-Options:
-  --camera INT          Camera device ID (default: 0)
-  --model TEXT          Model: yolov8n|s|m|l|x (default: yolov8n)
-  --confidence FLOAT    Confidence threshold 0.0-1.0 (default: 0.25)
-  --iou FLOAT          IOU threshold 0.0-1.0 (default: 0.45)
-  --no-display         Run without display
-```
-
-### Object Detection (Webcam or Video File)
-```bash
-python -m applications.object_detection --video SOURCE [OPTIONS]
-
-Options:
-  --video TEXT         Video file path or camera index (0, 1, 2...)
-  --output TEXT        Output video file path (optional)
-  --model TEXT         Model: yolov8n|s|m|l|x (default: yolov8n)
-  --confidence FLOAT   Confidence threshold 0.0-1.0 (default: 0.25)
-  --iou FLOAT         IOU threshold 0.0-1.0 (default: 0.45)
-  --no-display        Run without display
-```
-
-## Acknowledgments
-
-- Ultralytics for YOLO models
-- OpenCV community
-- Vulkan and OpenGL communities
-- Wilson Yu and AMD Advanced Technologies Group for inspiration
+MIT
 
