@@ -28,6 +28,8 @@ Computer vision project with real-time object detection and basic AR rendering:
 
 Install dependencies and run. Works on Windows, Linux, and Mac.
 
+**Note:** On Windows, if you see NumPy crash warnings or the app exits immediately, see the NumPy fix in Troubleshooting below.
+
 ### Windows
 
 ```powershell
@@ -209,14 +211,15 @@ python -m applications.ar_overlay --camera 0 --confidence 0.15
 
 ## Troubleshooting
 
-**Camera not opening:**
-Try different camera IDs (0, 1, 2) or check permissions.
-
-**NumPy/OpenCV crashes:**
+**NumPy/OpenCV crashes or app exits immediately:**
+Common on Windows. Some NumPy builds are unstable with OpenCV.
 ```bash
 pip uninstall numpy -y
 pip install "numpy>=2.0.0,<2.3.0" --force-reinstall
 ```
+
+**Camera not opening:**
+Try different camera IDs (0, 1, 2) or check permissions.
 
 **Model download fails:**
 Models download on first run. Manually download from ultralytics if needed.
